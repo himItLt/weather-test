@@ -6,6 +6,7 @@ use App\DTOs\ForecastItemData;
 use App\Models\Forecast;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Carbon\Carbon;
 
 class ForecastDbResource extends JsonResource
 {
@@ -24,7 +25,7 @@ class ForecastDbResource extends JsonResource
             max_temp: $this->max_temp,
             wind_speed: $this->wind_speed
         ))->toArray() + [
-            'updated_at' => $this->updated_at,
+            'updated_at' => Carbon::parse($this->updated_at)->toDateTimeString(),
             'city_name' => $this->city_name,
             ];
     }

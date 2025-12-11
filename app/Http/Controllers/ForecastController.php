@@ -35,8 +35,7 @@ class ForecastController extends BaseController
     {
         $validated = $request->validated();
 
-        $forecast = Forecast::where('city_name', $validated['city_name'])
-            ->get();
+        $forecast = Forecast::where('city_name', $validated['city_name'])->first();
 
         return $this->sendSuccess(
             (new ForecastDbResource($forecast))->toArray($request),
