@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'weather' => [
+        'app_id' => env('WEATHER_APP_ID'),
+        'api_url' => env('WEATHER_API_URL'),
+        'cache_period' => env('WEATHER_CACHE_PERIOD', 180),
+    ]
 ];
