@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTOs\ForecastApiData;
+use App\DTOs\ForecastItemData;
 use App\Exceptions\WeatherApiException;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Cache;
@@ -39,14 +40,35 @@ class WeatherService
             ]
         );
 
+        $forecastData = $response->json();
+
         if (!$response->successful()) {
-            throw new WeatherApiException('Oops... Something happened with API.');
+            throw new WeatherApiException($forecastData['message']);
         }
 
-        $forecastData = $response->json();
-        Log::debug('API call', $forecastData);
+        $firstDateTime = null;
+        $lastDateTime = null;
+        $forecasts = [];
+        $forecastsList = $forecastData['list'] ?: [];
 
-        return new ForecastApiData('Test', '12:00', '15:00', []);
+        if (empty($forecastsList)) {
+            throw new WeatherApiException('The forecasts list is empty.');
+        }
+
+        $periodStart = $forecastsList[0]['dt_txt'];
+        $periodEnd = $forecastsList[count($forecastsList) - 1]['dt_txt'];
+
+        foreach ($forecastsList as $forecastItemData) {
+            $forecasts[] = new ForecastItemData(
+                timestamp_dt: $forecastItemData['dt'],
+                text_dt: $forecastItemData['dt_txt'],
+                min_temp: $forecastItemData['main']['temp_min'],
+                max_temp: $forecastItemData['main']['temp_max'],
+                wind_speed: $forecastItemData['wind']['speed']
+            );
+        }
+
+        return new ForecastApiData($city, $periodStart, $periodEnd, $forecasts);
     }
 
     public function getCachedForecastByCity(string $city)

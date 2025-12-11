@@ -7,3 +7,4 @@ Route::get('search-api', [ForecastController::class, 'getFromApi']);
 
 /*Route::get('search-db', [ForecastController::class, 'getFromApi']);
 Route::post('store-forecast', [ForecastController::class, 'getFromApi']);*/
+

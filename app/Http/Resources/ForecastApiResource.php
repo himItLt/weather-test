@@ -8,6 +8,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ForecastApiResource extends JsonResource
 {
+    public $resource;
+
+    public function __construct(ForecastApiData $resource)
+    {
+        parent::__construct($resource);
+        $this->resource = $resource;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -15,7 +23,6 @@ class ForecastApiResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        /** @var ForecastApiData $this */
-        return $this->toArray();
+        return $this->resource->toArray();
     }
 }

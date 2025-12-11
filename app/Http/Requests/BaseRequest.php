@@ -13,13 +13,13 @@ class BaseRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(
-            $this->sendError('Invalid data sent', $validator->errors()->messages(), 422)
+            $this->sendError('Invalid data sent',422, $validator->errors()->messages())
         );
     }
 }
