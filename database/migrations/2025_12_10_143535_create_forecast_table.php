@@ -16,9 +16,9 @@ return new class extends Migration
             $table->timestamps();
             $table->unsignedInteger('timestamp_dt');
             $table->string('city_name', 80)->unique();
-            $table->float('min_tmp', 5);
-            $table->float('max_tmp', 5);
-            $table->float('wind_spd', 6);
+            $table->float('min_temp', 5);
+            $table->float('max_temp', 5);
+            $table->float('wind_speed', 6);
             $table->dateTime('text_dt');
         });
     }

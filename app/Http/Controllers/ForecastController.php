@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\WeatherApiException;
 use App\Http\Requests\ForecastSearchApiRequest;
 use App\Http\Requests\ForecastSearchDbRequest;
+use App\Http\Requests\ForecastStoreRequest;
 use App\Http\Resources\ForecastApiResource;
 use App\Http\Resources\ForecastDbResource;
 use App\Models\Forecast;
@@ -40,6 +41,20 @@ class ForecastController extends BaseController
         return $this->sendSuccess(
             (new ForecastDbResource($forecast))->toArray($request),
             'Forecast retrieved successfully.'
+        );
+    }
+
+    public function store(ForecastStoreRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $forecast = Forecast::updateOrCreate([
+            'city_name' => $validated['city_name']
+        ], $validated);
+
+        return $this->sendSuccess(
+            (new ForecastDbResource($forecast))->toArray($request),
+            'Forecast stored successfully.'
         );
     }
 }
