@@ -19,7 +19,7 @@ class BaseRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(
-            $this->sendError('Invalid data sent',422, $validator->errors()->messages())
+            $this->sendError('Invalid data sent', $validator->errors()->messages())
         );
     }
 }

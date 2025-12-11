@@ -27,7 +27,7 @@ class ForecastController extends BaseController
                 'Forecast data retrieved successfully.'
             );
         } catch (WeatherApiException|ConnectionException $e) {
-            return $this->sendError($e->getMessage(), 422);
+            return $this->sendError($e->getMessage());
         }
     }
 
