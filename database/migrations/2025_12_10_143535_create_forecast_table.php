@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('forecast', function (Blueprint $table) {
+        Schema::create('forecasts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->unsignedInteger('timestamp_dt');
+            $table->string('city_name', 80)->unique();
+            $table->float('min_tmp', 5);
+            $table->float('max_tmp', 5);
+            $table->float('wind_spd', 6);
+            $table->dateTime('text_dt');
         });
     }
 
@@ -22,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('forecast');
+        Schema::dropIfExists('forecasts');
     }
 };

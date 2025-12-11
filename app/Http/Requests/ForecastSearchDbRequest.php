@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class ForecastSearchRequest extends BaseRequest
+class ForecastSearchDbRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,7 @@ class ForecastSearchRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'city_name' => ['required', 'string', 'max:255'],
+            'city_name' => ['required', 'string', 'max:80', 'exists:forecasts,city_name'],
         ];
     }
 }
