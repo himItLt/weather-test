@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 
 function SearchForm({onSearchDb, onSearchApi}) {
   const [cityName, setCityName] = useState('');
@@ -15,9 +16,9 @@ function SearchForm({onSearchDb, onSearchApi}) {
   }
 
   return (
-    <form className="search-form">
+    <div className="search-form">
       <div className="field">
-        <label for="city_name">City Name</label>
+        <label>City Name</label>
         <input
           id="city_name"
           type="text"
@@ -31,7 +32,7 @@ function SearchForm({onSearchDb, onSearchApi}) {
       <div className="field">
         <button className="color-yellow" onClick={handleSearchDb}>Get From DB</button>
       </div>
-    </form>
+    </div>
   );
 }
 

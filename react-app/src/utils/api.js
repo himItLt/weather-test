@@ -73,7 +73,7 @@ const Api = {
 
   saveForecast: async (cityName, forecast, setMessage) => {
      try {
-        const response = await axios.post(API_URL + '/search-db', {
+        const response = await axios.post(API_URL + '/store-forecast', {
           city_name: cityName,
           ...forecast  
         });

@@ -3,6 +3,8 @@ import Api from './utils/api';
 import Message from './components/Message';
 import Loader from './components/Loader';
 import SearchForm from './components/SearchForm';
+import ApiDetails from './components/ApiDetails';
+import DbDetails from './components/DbDetails';
 
 function App() {
   const [apiData, setApiData] = useState(null);
@@ -10,20 +12,26 @@ function App() {
   const [loading, setLoading] = useState(null);
   const [message, setMessage] = useState(null);
 
-  const searchApi = () => {
-    setLoading('Searching...');
+  const reset = () => {
     setMessage(null);
+    setDbData(null);
     setApiData(null);
-    Api.getFromApi('', setMessage, setApiData);
+  }
+  const updateApiStatus = (apiMessage) => {
     setLoading(null);
-
-    console.log('API data:', apiData);
+    setMessage(apiMessage);
   }
 
-  const searchDb = () => {
+  const searchApi = (cityName) => {
     setLoading('Searching...');
-    Api.getFromDb('', setMessage, setDbData);
-    setLoading(null);
+    reset();
+    Api.getFromApi(cityName, updateApiStatus, setApiData);
+  }
+
+  const searchDb = (cityName) => {
+    setLoading('Searching...');
+    reset();
+    Api.getFromDb(cityName, updateApiStatus, setDbData);
   }
 
   const saveForecast = () => {
@@ -31,8 +39,8 @@ function App() {
       return;
     }
     setLoading('Saving...');
-    Api.saveForecast(apiData.city_name, apiData.forecasts[0], setMessage);
-    setLoading(null);
+    setMessage(null);
+    Api.saveForecast(apiData.city_name, apiData.forecasts[0], updateApiStatus);
   }
 
   useEffect(() => {
@@ -47,7 +55,18 @@ function App() {
         <SearchForm onSearchApi={searchApi} onSearchDb={searchDb}/>
         {loading && <Loader message={loading}/>}
         {message && <Message message={message}/>}
-        {}
+        {apiData && <ApiDetails 
+          cityName={apiData.city_name}
+          start={apiData.period_start}
+          end={apiData.period_end}
+          onForecastSave={saveForecast}
+          forecasts={apiData.forecasts}
+        />}
+        {dbData && <DbDetails 
+          cityName={dbData.city_name}
+          updatedAt={dbData.updated_at}
+          forecasts={[dbData]}
+        />}
       </main>
     </div>
   )
